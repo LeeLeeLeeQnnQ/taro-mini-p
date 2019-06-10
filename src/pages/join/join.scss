@@ -1,0 +1,72 @@
+@import "@styles/theme.scss";
+
+.join {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.join__wrap{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 35px;
+    background-color: rgba(241,241,241,1);
+    &-h3{
+      font-size: 40px;
+    }
+    &-p{
+      color: $gray;
+      font-size: 28px;
+    }
+  }
+  &-sbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:0 30px;
+    &-section{
+      width: 100%;
+      background-color: rgba(241,241,241,1);
+      border: 1px solid #999;
+      border-radius: 15px;
+      padding: 20px;
+      text-indent: 10px;
+      &-picker{
+        color: $text-color-lighter;
+        font-size: 30px;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  }
+  &-ibx{
+    padding: 0 30px;
+    &-input{
+      height: 80px;
+      line-height: 80px;
+      width: 100%;
+      box-sizing: border-box;
+      background-color: rgba(241,241,241,1);
+      text-indent: 10px;
+      border: 1px solid #999;
+      padding-left:15px;
+    }
+  }
+  
+}
+.join__footer{
+  padding:30px;
+  margin-bottom: 100px;
+  margin-top: 100px;
+  &-btn{
+    background-color: #299f94;
+    color: #fff;
+  }
+}
+

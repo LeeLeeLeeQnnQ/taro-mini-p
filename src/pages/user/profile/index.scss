@@ -1,0 +1,60 @@
+@import "@styles/theme.scss";
+
+$height: 270px;
+$avatarSize: 140px;
+
+.user-profile {
+  position: relative;
+  height: $height;
+  overflow: hidden;
+}
+
+.user-profile__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $height;
+  background-color: $bg_light_gray;
+}
+
+.user-profile__wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+.user-profile__wrap-btn {
+  position: absolute;
+  top:10px;
+  right: 10px;
+  height: 55px;
+  line-height: 55px;
+  background-color: $orange;
+  color: #fff;
+}
+
+.user-profile__avatar {
+  width: $avatarSize;
+  height: $avatarSize;
+  border-radius: $avatarSize / 2;
+  overflow: hidden;
+
+  &-img {
+    width: $avatarSize;
+    height: $avatarSize;
+  }
+}
+
+.user-profile__info {
+  margin-top: 8px;
+  &-name {
+    color: #444;
+    font-size: 36px;
+    line-height: 36px;
+  }
+}
+

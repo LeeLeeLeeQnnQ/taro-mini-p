@@ -1,0 +1,2 @@
+export const SHOP_LIST_INFO = 'SHOP_LIST_INFO'
+export const CREATE_ORDER = 'CREATE_ORDER'

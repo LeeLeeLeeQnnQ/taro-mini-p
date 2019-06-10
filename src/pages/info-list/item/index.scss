@@ -1,0 +1,54 @@
+@import "@styles/theme.scss";
+
+.Item{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: 15px 15px 0 15px;
+	border-radius: 15px;
+	background-color: #fff;
+	margin: 25px;
+}
+
+.Item__top{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 10px 20px 10px 30px;
+	border-bottom: 1px solid $border-color;
+	&-box{
+		&-text{
+			color: $orange;
+			font-size: 28px;
+			&-money{
+				font-size: 60px;
+			}
+		}
+		&-title{
+			font-size: 28px;
+		}
+	}
+	&-type1{
+		color: rgba(219,42,50,1);
+	}
+	&-type2{
+		color: rgba(37,183,26,1);
+	}
+	&-type3{
+		color: #000;
+	}
+}
+
+.Item__bottom{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding:10px 20px;
+	color: $border-color;
+	font-size: 26px;
+}
+
+
+
+
+

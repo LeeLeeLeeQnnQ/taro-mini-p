@@ -1,0 +1,14 @@
+@import "@styles/theme.scss";
+
+.title-dec{
+	display: flex;
+	flex-direction: column;
+	padding: 30px;
+	&-h3{
+		font-size: 32px;
+	}
+	&-p{
+		color: $gray;
+		font-size: 28px;
+	}
+}
