@@ -8,7 +8,7 @@ import Menu from './menu'
 import './user.scss'
 
 @connect(state => state.user, { ...actions })
-class User extends Component {
+class NewUser extends Component {
   config = {
     navigationBarTitleText: '个人中心'
   }
@@ -16,54 +16,34 @@ class User extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loaded: false
+      loaded: false,
+      lkey:0,
+      inviteInfo:{
+        is_order: 0 ,
+        not_order: 0
+      }
     }
   }
 
   componentWillMount () {
-    this.wxlogin()
-  }
-  componentDidMount() {
-    
-  }
-
-  wxlogin = () => {
-    wx.login({
-    success: res => {
-      var code = res.code;
-      if (code) {
-          this.getUserInfo( code )
-        } else {
-          this.wxlogin()
-        }
-      }
-    })
-  }
-
-  getUserInfo = ( code ) =>{
     Taro.getUserInfo().then((res) =>{
-      res.code = code
       const { rawData } = res || '';
       this.setState({ userInfo : JSON.parse(rawData)})
-      this.setState({ loaded: true })
-      wx.request({
-        url: 'https://wechat.baitime.cn/wechat/User/info',
-        data: new Object(res,{code : code}),
-        method: 'POST',
-        header: {
-          'content-type': 'application/json'
-        }
+      this.props.dispatchInvite({isGetinfo: true}).then((res) => {
+        this.setState({ inviteInfo: res })
+        this.setState({ loaded: true })
       })
     }).catch((err)=>{
-      this.setState({ userInfo : ''})
-      this.setState({ loaded: true })
-      return Promise.reject({ message: err })
+      this.props.dispatchInvite({isGetinfo: true}).then((res) => {
+        this.setState({ inviteInfo: res })
+        this.setState({ loaded: true })
+      })
     })
   }
-
 
 
   render () {
+    let that = this;
     if (!this.state.loaded) {
       return <Loading />
     }
@@ -75,11 +55,11 @@ class User extends Component {
           style={{ height: getWindowHeight() }}
         >
         <Profile data={this.state.userInfo}></Profile>
-        <Menu/>
+        <Menu data={this.state.inviteInfo} />
         </ScrollView>
       </View>
     )
   }
 }
 
-export default User
+export default NewUser

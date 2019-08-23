@@ -29,13 +29,8 @@ class InfoDetail extends Component {
   componentDidMount() {
     const payload = {
       id: this.itemId,
-    }
-    Taro.getUserInfo().then((res) =>{
-      const { rawData } = res
-      this.setState({ userInfo : JSON.parse(rawData)})
-    }).catch((err)=>{
-      return Promise.reject({ message: err })
-    })
+      isGetinfo:true,
+    } 
     this.props.dispatchOrderDetail(payload).then(() => {
       this.setState({ loaded: true })
     })
@@ -80,7 +75,7 @@ class InfoDetail extends Component {
               <Icon size='45' type='warn' />
               <View className='info-detail__wrap-top-box-title'>
                 <Text className='info-detail__wrap-top-box-title-text'>参与失败</Text>
-                <Text className='info-detail__wrap-top-box-title-dec'>红包已发送</Text>
+                <Text className='info-detail__wrap-top-box-title-dec'>感谢您的参与</Text>
               </View>
             </View>
           }  
@@ -95,14 +90,14 @@ class InfoDetail extends Component {
                   <View className='info-detail__wrap-body-bm-main-ab-avatar'>
                     <Image
                       className='info-detail__wrap-body-bm-main-ab-avatar'
-                      src={this.state.userInfo.avatarUrl || defaultAvatar}
+                      src={orderDetail.headimgurl || defaultAvatar}
                     />
                   </View>
                   <View className='info-detail__wrap-body-bm-main-ab-tb'>
                     <View className='info-detail__wrap-body-bm-main-ab-tb-title'>
                       昵称：
                       <Text className='info-detail__wrap-body-bm-main-ab-tb-title-info'>
-                        {this.state.userInfo.nickName ? this.state.userInfo.nickName : '未获取'}
+                        {orderDetail.nickname ? orderDetail.nickname : '未获取'}
                       </Text>
                     </View>
                     <View className='info-detail__wrap-body-bm-main-ab-tb-title'>
@@ -126,7 +121,7 @@ class InfoDetail extends Component {
                 {(orderDetail.order_state == 1) && 
                   <View className='info-detail__wrap-body-bm-main-content'>参与成功,{orderDetail.order_price}元红包已发送</View>
                 }
-                {(orderDetail.order_state == 2) && 
+                {(orderDetail.order_state == 4) && 
                   <View className='info-detail__wrap-body-bm-main-content'>{orderDetail.remark}</View>
                 }
                 <View className='info-detail__wrap-body-bm-main-title'>提交时间</View>

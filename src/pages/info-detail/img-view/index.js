@@ -11,9 +11,9 @@ export default class ImgView extends Component {
   render () {
     const { data } = this.props
     return (
-      <View className='user-profile'>
+      <View className='img-view'>
         <Image
-          className='info-detail__wrap-body-bm-main-cimg'
+          className='img-view__img'
           src={data}
           mode = 'widthFix'
         />

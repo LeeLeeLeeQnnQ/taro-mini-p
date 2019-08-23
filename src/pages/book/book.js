@@ -16,17 +16,92 @@ class Book extends Component {
     super(props)
     this.state = {
       loaded: false,
+      lkey:0
     }
   }
 
+  getStorage = (key) => {
+       return Taro.getStorage({ key: key }).then(res => { return res.data}).catch(() => '')
+  }
   
   componentDidMount() {
     this.setState({ loaded: true })
   }
 
+
+
   handleJoin = () => {
-    Taro.navigateTo({
-      url: '/pages/join/join'
+    let _this = this;
+    this.setState({ lkey: 0 }, ()=> {
+      this.getStorage('token').then(function (rs) {
+          if(!!rs){
+            Taro.navigateTo({
+              url: `/pages/join/join`
+            })
+            return
+          }
+          _this.wxLogin()
+      });
+    })
+  }
+
+
+  wxLogin = () => {
+    wx.login({
+    success: res => {
+      var code = res.code;
+      if (code){
+          wx.request({
+            url: 'https://wechat.baitime.cn/wechat/User/info',
+            data: { code: code },
+            method: 'POST',
+            header: {
+              'content-type': 'application/json'
+            },
+            success: function (res) {
+              if(res.data.code == 0) {
+                Taro.setStorage({ key: 'token', data: res.data.data['token'] || '' })
+                Taro.navigateTo({
+                  url: `/pages/join/join`
+                })
+              }else if (res.data.code == 20) {
+                Taro.showToast({
+                  title: '请稍后再试！',
+                  icon: 'none'
+                })
+              }else if (res.data.code == 2148) {
+                Taro.showModal({
+                  title: '请先登陆！',
+                  content: '',
+                  showCancel:false,
+                })
+                .then(res => 
+                  Taro.switchTab({
+                    url: `/pages/new-user/user`
+                  })
+                )
+              }else{
+                Taro.showToast({
+                  title: res.msg,
+                  icon: 'none'
+                })
+              }
+            },
+          })
+        } else {
+          if(this.state.lkey == 5){
+            Taro.showToast({
+              title: '网络错误！',
+              icon: 'none'
+            })
+            return
+          }
+          let lkey = this.state.lkey*1 + 1;
+          this.setState( { lkey: lkey }, ()=> {
+            this.wxLogin()
+          })
+        }
+      }
     })
   }
 

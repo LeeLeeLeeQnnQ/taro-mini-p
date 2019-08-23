@@ -1,7 +1,8 @@
-import { USER_INFO, USER_LOGIN, USER_LOGOUT } from '@constants/user'
+import { USER_INFO, USER_LOGIN, USER_LOGOUT , USER_MYINVITE } from '@constants/user'
 
 const INITIAL_STATE = {
-  userInfo: {}
+  userInfo: {},
+  inviteInfo:{}
 }
 
 export default function user(state = INITIAL_STATE, action) {

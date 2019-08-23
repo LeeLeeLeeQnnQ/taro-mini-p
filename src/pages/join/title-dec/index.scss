@@ -4,11 +4,24 @@
 	display: flex;
 	flex-direction: column;
 	padding: 30px;
-	&-h3{
-		font-size: 32px;
+	&-tbox{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		&-h3{
+			font-size: 32px;
+		}
+		&-btn{
+			font-size: 28px;
+			color: $orange;
+		}
 	}
 	&-p{
 		color: $gray;
+		font-size: 28px;
+	}
+	&-pr{
+		color: red;
 		font-size: 28px;
 	}
 }

@@ -24,6 +24,7 @@ export default class Profile extends Component {
   }
 
   handleLogin = (e) => {
+    let that = this;
     if(e.detail.errMsg == "getUserInfo:ok"){
       this.setState({ userInfo : JSON.parse(e.detail.rawData) , isAuth : true })
       wx.login({
@@ -37,10 +38,10 @@ export default class Profile extends Component {
               method: 'POST',
               header: {
                 'content-type': 'application/json'
-              }
+              },
+              success: function (res) {
+              },
             })
-          } else {
-            this.wxlogin()
           }
         }
       })

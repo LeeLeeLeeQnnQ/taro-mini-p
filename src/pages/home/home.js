@@ -17,6 +17,9 @@ import SpreadList from './spread-list'
 // 获取样式
 import './home.scss'
 
+import iconSend from './assets/icon_send.png';
+import shareImg from './assets/share.png';
+
 // 分享
 import withShare from '../../share/withShare'
 
@@ -27,7 +30,8 @@ const SPREAD_SIZE = 10
 @connect(state => state.home, { ...actions})
 @withShare({
     title: '', 
-    imageUrl: '', 
+    imageUrl: shareImg,
+    iconSend: iconSend,
     path: ''
 })
 
@@ -35,7 +39,7 @@ const SPREAD_SIZE = 10
 class Home extends Component {
   // 小程序文字配置
   config = {
-    navigationBarTitleText: '北京外卖福利社'
+    navigationBarTitleText: '外卖美食社'
   }
   // loading与刷新状态
   state = {
@@ -69,6 +73,14 @@ class Home extends Component {
     // 获取传播列表函数
     this.loadSpread()
   }
+  
+  handleBook = () => {
+    Taro.switchTab({
+      url: `/pages/book/book`
+    })
+  }
+
+  
 
   // 获取传播列表函数
   loadSpread = () => {
@@ -103,6 +115,10 @@ class Home extends Component {
     const { bannerList } = this.props
     return (
       <View className='home'>
+        <View className='home__arrow-box' onClick={this.handleBook}>
+          <Image className='home__arrow-box-icon' mode='widthFix' src={iconSend} />
+          <View className='home__arrow-box-text'>自助返现</View>
+        </View>
         <ScrollView
           scrollY
           className='home__wrap'

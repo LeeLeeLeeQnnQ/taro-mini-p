@@ -20,7 +20,9 @@ export const API_CREATE_ORDER = `${host}/wechat/User/createOrder`
 // info-list
 export const API_ORDER_LIST = `${host}/wechat/User/queryOrderList`
 export const API_ORDER_DETAIL = `${host}/wechat/User/queryOrder`
+export const API_INVITE_LIST = `${host}/wechat/User/queryInviteList`
 
 // user
 export const API_USER = `${host}/wechat/User/info`
 export const API_USER_LOGIN = `${host}/wechat/User/info`
+export const API_USER_INVITE = `${host}/wechat/User/queryInvite`

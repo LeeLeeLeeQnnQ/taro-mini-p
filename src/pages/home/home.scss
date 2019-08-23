@@ -9,6 +9,32 @@
   background: #fafafa;
   /*background-color: red;*/
 }
+.home__arrow-box{
+  position: fixed;
+  right:0;
+  top:450px;
+  width: 180px;
+  height: 60px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 30px 0 0 30px ;
+  border:1px solid #299f94;
+  background-color: #299f94;
+  &-icon{
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    padding: 5px;
+    border:10px solid #299f94;
+    border-radius: 50%;
+  }
+  &-text{
+    font-size: 24px;
+    color: #fff;
+  }
+}
 
 .home__loading {
   display: flex;

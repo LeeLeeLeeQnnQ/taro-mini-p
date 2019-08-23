@@ -26,14 +26,19 @@ class App extends Component {
 
   config = {
     pages: [
+
       'pages/home/home',
       'pages/book/book',
       'pages/join/join',
-      'pages/user/user',
+      'pages/new-user/user',
       'pages/store-item/store-item',
       'pages/info-list/info-list',
       'pages/info-detail/info-detail',
-      'pages/webview/webview'
+      'pages/webview/webview',
+      // 'pages/new-book/book',
+      // 'pages/new-user/user',
+      'pages/receive-list/receive-list',
+      'pages/invite-list/invite-list',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -60,7 +65,7 @@ class App extends Component {
         text: "自助返现",
       },
       {
-        pagePath: "pages/user/user",
+        pagePath: "pages/new-user/user",
         iconPath: "./assets/tab-bar/user.png",
         selectedIconPath: "./assets/tab-bar/user-active.png",
         text: "个人中心"

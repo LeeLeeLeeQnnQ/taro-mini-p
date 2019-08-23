@@ -23,6 +23,7 @@ class Join extends Component {
       loaded: false,
       loading: false,
       pindex:0,
+      btnLoading:false
     }
   }
   
@@ -34,6 +35,9 @@ class Join extends Component {
   }
 
   createOrder = () => {
+    if(!!this.state.btnLoading){
+      return
+    }
     if(!this.state.shopList[this.state.pindex].id){
       Taro.showToast({
         title: '请选择有效店铺',
@@ -80,8 +84,15 @@ class Join extends Component {
       comment_image:this.state.comment_image,
       shop_image:this.state.shop_image,
       order_image:this.state.order_image,
+      isGetinfo:true,
     }
+    this.setState({
+      btnLoading: true,
+    })
     this.props.dispatchCreateOrder(payload).then((res) => {
+      this.setState({
+        btnLoading: false,
+      })
       if(res.data.code != 0){
         Taro.showToast({
           title: '请求失败,请稍后再试!',
@@ -99,7 +110,11 @@ class Join extends Component {
         Taro.switchTab({
           url: `/pages/home/home`
         })
-      )})
+    )}).catch(() => {
+      this.setState({
+        btnLoading: false,
+      })
+    })
   }
 
   onChange = e => {
@@ -134,18 +149,49 @@ class Join extends Component {
   // 提交的时候定时器延迟
 
   render () {
+    const height = getWindowHeight(false)
+    const { shopList } = this.props
     if (!this.state.loaded) {
       return <Loading />
     }
     // 数据
-    const height = getWindowHeight(false)
-    const xuanzemendian = { title : "选择门店" , dec : "请认真选择，选择错误将不予返现" } 
-    const dingdanjietu1 = { title : "上传订单截图" , dec : "显示出商家名称，订单商品，金额" } 
-    const pingjiejietu = { title : "上传评价截图" , dec : "显示出商家名称，订单商品，金额" } 
-    const dingdanjietu2 = { title : "上传订单截图" , dec : "显示出订单时间，订单号" } 
-    const dingdanhao = { title : "订单号" , dec : "订单号可从美团/饿了么复制或手动输入" }
-    const guize = { dec : "自助返现规则说明：" , dec2 : "请在下单当天提交，超时无效不予返现。" } 
-    const { shopList } = this.props
+    const xuanzemendian = {
+      title : "选择店铺" ,
+      dec : "请点击选择下单店铺，选择错误将不予返现" ,
+      ctRed:true 
+    } 
+    const dingdanhao = { 
+      title : "订单号" , 
+      dec : "从美团／饿了么APP复制" , 
+      isHasImg:true , 
+      exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e1.jpg" 
+    }
+    const dingdanjietu1 = {
+      title : "上传商家截图" ,
+      dec : "包含：商家名称、支付金额" ,
+      isHasImg:true ,
+      exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e3.jpg" 
+    } 
+    const pingjiejietu = {
+      title : "上传评价截图" ,
+      dec : "包含：商家名称、文字评语、好评图片" ,
+      isHasImg:true ,
+      exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e2.jpg" 
+    } 
+    const dingdanjietu2 = { 
+      title : "上传时间截图" , 
+      dec : "包含：订单号码、下单时间" , 
+      isHasImg:true , 
+      exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e4.jpg" 
+    } 
+    
+    const guize = { 
+      dec : "自助返现规则说明：" , 
+      dec2 : "每人每天每店限1单", 
+      dec3 : "每单限1份返利商品", 
+      dec4 : "返现24小时内审核发放", 
+      dec5 : "如有疑问可咨询微信：hys18610653576"
+    } 
     return (
       <View className='join'>
         <ScrollView
@@ -203,7 +249,7 @@ class Join extends Component {
             data={ guize } 
           />
           <View className='join__footer'>
-            <Button className='join__footer-btn' onClick={this.createOrder}>我要报名</Button>
+            <Button className='join__footer-btn' loading = { this.state.btnLoading } onClick={this.createOrder}>我要报名</Button>
           </View>
           <official-account></official-account>
         </ScrollView>

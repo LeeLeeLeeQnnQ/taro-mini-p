@@ -3,18 +3,17 @@ import { API_USER, API_USER_LOGIN } from '@constants/api'
 
 const CODE_SUCCESS = 0
 const CODE_AUTH_EXPIRED = 1024
+let flkey = 0
 
 function getStorage(key) {
   return Taro.getStorage({ key: key }).then(res => res.data).catch(() => '')
 }
 
 function updateStorage(data) {
-  return Promise.all([
-    Taro.setStorage({ key: 'token', data: data['token'] || '' }),
-  ])
+  return Taro.setStorage({ key: 'token', data: data['token'] || '' })
 }
 
-function wxlogin() {
+async function wxlogin(cb,options) {
   wx.login({
   success: res => {
     var code = res.code;
@@ -27,31 +26,51 @@ function wxlogin() {
             'content-type': 'application/json'
           },
           success: function (res) {
-            if (res.data.code == 0) {
-              updateStorage(res.data.data)
-            } else {
-              wxlogin()
+            if(res.data.code == 0) {
+             updateStorage(res.data.data)
+            }else if (res.data.code == 20) {
+              Taro.showToast({
+                title: '请稍后再试！',
+                icon: 'none'
+              })
+            }else if (res.data.code == 2148) {
+              Taro.showModal({
+                title: '请先登陆！',
+                content: '',
+                showCancel:false,
+              })
+              .then(res => 
+                Taro.switchTab({
+                  url: `/pages/new-user/user`
+                })
+              )
+            }else{
+              Taro.showToast({
+                title: res.msg,
+                icon: 'none'
+              })
             }
           },
         })
       } else {
-        wxlogin()
+        if(flkey == 5){
+          Taro.showToast({
+            title: '网络错误！',
+            icon: 'none'
+          })
+          return
+        }
+        flkey = flkey*1 + 1;
+        wxlogin();
       }
     }
   })
+  return cb(options);
 }
 
-/**
- * 简易封装网络请求
- * // NOTE 需要注意 RN 不支持 *StorageSync，此处用 async/await 解决
- * @param {*} options
- */
-export default async function fetch(options) {
-  const { url, payload, method = 'GET', showToast = true, autoLogin = true } = options
+async function sendRequest(options){
+  const { url, payload = {}, method = 'GET', showToast = true, autoLogin = true } = options
   const token = await getStorage('token')
-  if(!token){
-    await wxlogin();
-  }
   const header = {
       'cookie': token ?  'token='+token : ''
   }
@@ -67,18 +86,22 @@ export default async function fetch(options) {
     header
   }).then( async (res) => {
     const { code, data } = res.data
-    
+
     // 判断是不是成功
     if (code !== CODE_SUCCESS) {
-      if (code === CODE_AUTH_EXPIRED) {
-        await updateStorage({})
+      if(code == CODE_AUTH_EXPIRED){
+        Taro.showToast({
+          title: '请登陆！',
+          icon: 'none'
+        })
+        return
       }
-      return Promise.reject(res.data)
+      Taro.showToast({
+        title: res.data.msg,
+        icon: 'none'
+      })
+      return
     }
-
-    // if (url === API_USER_LOGIN) {
-    //   await updateStorage(data)
-    // }
     return data || res
   }).catch( async (err) => {
     const defaultMsg = err.code === CODE_AUTH_EXPIRED ? '服务异常' : '请求异常'
@@ -97,4 +120,20 @@ export default async function fetch(options) {
 
     return Promise.reject({ message: defaultMsg, ...err })
   })
+}
+/**
+ * 简易封装网络请求
+ * // NOTE 需要注意 RN 不支持 *StorageSync，此处用 async/await 解决
+ * @param {*} options
+ */
+export default async function fetch(options) {
+  flkey = 0;
+  const { payload = {} } = options
+  let isGetinfo = payload.isGetinfo || false;
+  const isToken = await getStorage('token')
+  if(isGetinfo && !isToken){
+    return wxlogin(sendRequest,options);
+  }else{
+    return await sendRequest(options)
+  }
 }

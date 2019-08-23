@@ -19,11 +19,11 @@ class InfoList extends Component {
     loading: false,
     page: 1,
     hasMore: true,
-    spreadList:[],
+    orderList:[],
   }
 
   componentWillMount(){
-    this.props.orderList = []
+    
   }
 
   // 已经挂载数据生命周期函数
@@ -49,14 +49,13 @@ class InfoList extends Component {
       page_size: INFO_SIZE
     }
     this.setState({ loading: true })
-
-    this.props.dispatchOrderList(payload).then((res) => {
+    this.props.dispatchOrderList(payload).then((res) => {   
       const list = this.state.orderList.concat(res.list);
       const page = res.page;
       this.setState({ orderList: list })
       this.setState({
         loading: false,
-        hasMore: res.hasMore,
+        hasMore: res.more,
         page: page && page.next_page
       })
     }).catch(() => {
@@ -76,7 +75,7 @@ class InfoList extends Component {
           onScrollToLower={this.loadInfoList}
           style={{ height: getWindowHeight() }}
         >
-        {(this.state.orderList.length == 0) && <View className='info-list__center'>暂无数据</View>}
+        {(!this.state.loading && (this.state.orderList.length == 0)) && <View className='info-list__center'>您暂时还未参与活动</View>}
         {this.state.orderList.map((item) => {
           return (
             <View
@@ -87,6 +86,16 @@ class InfoList extends Component {
             </View>
           )
         })}
+        {this.state.loading &&
+          <View className='info-list__loading'>
+            <Text className='info-list__loading-txt'>正在加载中...</Text>
+          </View>
+        }
+        {!this.state.hasMore &&
+          <View className='info-list__loading info-list__loading--not-more'>
+            <Text className='info-list__loading-txt'>没有更多了</Text>
+          </View>
+        }
         </ScrollView>
       </View>
     )
