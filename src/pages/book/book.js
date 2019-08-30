@@ -4,6 +4,7 @@ import { getWindowHeight } from '@utils/style'
 import bookImg from './assets/bookImg.jpg';
 // import * as actions from '@actions/user'
 // import { connect } from '@tarojs/redux'／
+// import TitleDec from './title-dec'
 import './book.scss'
 
 
@@ -112,6 +113,12 @@ class Book extends Component {
       return <Loading />
     }
 
+    const dingdanhao = { 
+      title : "订单号" , 
+      dec : "从美团／饿了么APP复制" , 
+      isHasImg:true , 
+      exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e1.jpg" 
+    }
     // 数据
     const height = getWindowHeight(false)
 
@@ -122,8 +129,10 @@ class Book extends Component {
         >
            <Image className='book__wrap-img' mode='widthFix' src={bookImg} />
         </ScrollView>
-        <View className='book__footer'>
-          <Button className='book__footer-btn'  onClick={this.handleJoin}>我要报名</Button>
+        <View className='book__fwarp'>
+          <View className='book__footer'>
+            <Button className='book__footer-btn'  onClick={this.handleJoin}>我要报名</Button>
+          </View>
         </View>
       </View>
     )

@@ -10,6 +10,9 @@ export default class SwiperBanner extends Component {
   }
 
   handleClick = (url) => {
+    if(!url){
+      return
+    }
     jump({ title:'参与方式' , url: url })
   }
 

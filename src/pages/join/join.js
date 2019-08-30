@@ -184,7 +184,6 @@ class Join extends Component {
       isHasImg:true , 
       exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e4.jpg" 
     } 
-    
     const guize = { 
       dec : "自助返现规则说明：" , 
       dec2 : "每人每天每店限1单", 

@@ -13,9 +13,9 @@ export const API_HOME_SPREAD = `${host}/wechat/Shop/index`
 // store-item
 export const API_ITEM = `${host}/wechat/Shop/show`
 
-// join
-export const API_SHOP_LIST = `${host}/wechat/Shop/getShopList`
-export const API_CREATE_ORDER = `${host}/wechat/User/createOrder`
+// apply
+export const API_SHOW_INFO = `${host}/wechat/User/searchOrder`
+export const API_APPLY_ORDER = `${host}/wechat/User/createOrder`
 
 // info-list
 export const API_ORDER_LIST = `${host}/wechat/User/queryOrderList`
@@ -26,3 +26,8 @@ export const API_INVITE_LIST = `${host}/wechat/User/queryInviteList`
 export const API_USER = `${host}/wechat/User/info`
 export const API_USER_LOGIN = `${host}/wechat/User/info`
 export const API_USER_INVITE = `${host}/wechat/User/queryInvite`
+
+
+// join
+export const API_SHOP_LIST = `${host}/wechat/Shop/getShopList`
+export const API_CREATE_ORDER = `${host}/wechat/User/createOrder`

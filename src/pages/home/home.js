@@ -76,7 +76,7 @@ class Home extends Component {
   
   handleBook = () => {
     Taro.switchTab({
-      url: `/pages/book/book`
+      url: `/pages/apply/apply`
     })
   }
 

@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   orderDetail:{},
 }
 
-export default function item(state = INITIAL_STATE, action) {
+export default function info(state = INITIAL_STATE, action) {
   switch(action.type) {
     case ORDER_LIST: {
       let list = action.payload.list || []

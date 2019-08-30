@@ -26,17 +26,13 @@ class App extends Component {
 
   config = {
     pages: [
-
       'pages/home/home',
-      'pages/book/book',
-      'pages/join/join',
+      'pages/apply/apply',
       'pages/new-user/user',
       'pages/store-item/store-item',
       'pages/info-list/info-list',
       'pages/info-detail/info-detail',
       'pages/webview/webview',
-      // 'pages/new-book/book',
-      // 'pages/new-user/user',
       'pages/receive-list/receive-list',
       'pages/invite-list/invite-list',
     ],
@@ -59,7 +55,7 @@ class App extends Component {
         text: "外卖福利"
       },
       {
-        pagePath: "pages/book/book",
+        pagePath: "pages/apply/apply",
         iconPath: "./assets/tab-bar/money.png",
         selectedIconPath: "./assets/tab-bar/money-active.png",
         text: "自助返现",
