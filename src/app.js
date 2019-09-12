@@ -1,12 +1,12 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
-import { Provider , connect  } from '@tarojs/redux'
-import { View, ScrollView , Loading } from '@tarojs/components'
+import { Provider  } from '@tarojs/redux'
+// import { View, ScrollView , Loading } from '@tarojs/components'
 import Index from './pages/index'
 
 import configStore from './store'
 
-import * as actions from '@actions/user'
+// import * as actions from '@actions/user'
 import './app.scss'
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -17,7 +17,7 @@ import './app.scss'
 const store = configStore()
 
 
-@connect(state => state.user, { ...actions })
+// @connect(state => state.user, { ...actions })
 class App extends Component {
 
   state = {

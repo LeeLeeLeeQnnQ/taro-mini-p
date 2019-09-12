@@ -106,12 +106,24 @@ class InfoDetail extends Component {
                     </View>
                   </View>
                 </View>
-                <View className='info-detail__wrap-body-bm-main-title'>订单截图</View>
-                <ImgView className='info-detail__wrap-body-bm-main-cimg' data={orderDetail.order_image}/>
-                <View className='info-detail__wrap-body-bm-main-title'>订单截图</View>
-                <ImgView className='info-detail__wrap-body-bm-main-cimg' data={orderDetail.shop_image}/>
-                <View className='info-detail__wrap-body-bm-main-title'>评论订单</View>
-                <ImgView className='info-detail__wrap-body-bm-main-cimg' data={orderDetail.comment_image}/>
+                {(!!orderDetail.order_image) &&
+                  <View>
+                    <View className='info-detail__wrap-body-bm-main-title'>订单截图</View>
+                    <ImgView className='info-detail__wrap-body-bm-main-cimg' data={orderDetail.order_image}/>
+                  </View>
+                }
+                {(!!orderDetail.shop_image) &&
+                  <View>
+                    <View className='info-detail__wrap-body-bm-main-title'>订单截图</View>
+                    <ImgView className='info-detail__wrap-body-bm-main-cimg' data={orderDetail.shop_image}/>
+                  </View>
+                }
+                {(!!orderDetail.comment_image) &&
+                  <View>
+                    <View className='info-detail__wrap-body-bm-main-title'>评论订单</View>
+                    <ImgView className='info-detail__wrap-body-bm-main-cimg' data={orderDetail.comment_image}/>
+                  </View>
+                }
                 <View className='info-detail__wrap-body-bm-main-title'>订单号</View>
                 <View className='info-detail__wrap-body-bm-main-content'>{orderDetail.order_sn}</View>
                 <View className='info-detail__wrap-body-bm-main-title'>审核状态</View>
