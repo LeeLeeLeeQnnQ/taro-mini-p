@@ -24,6 +24,27 @@
       padding-left:15px;
     }
   }
+  &-sbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:0 30px;
+    &-section{
+      width: 100%;
+      background-color: rgba(241,241,241,1);
+      border: 1px solid #999;
+      border-radius: 15px;
+      padding: 20px;
+      text-indent: 10px;
+      &-picker{
+        color: $text-color-lighter;
+        font-size: 30px;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  }
 }
 
 .apply__btnbox{

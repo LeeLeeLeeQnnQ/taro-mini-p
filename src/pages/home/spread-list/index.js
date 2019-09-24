@@ -2,10 +2,21 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Tag } from '@components'
 import './index.scss'
+import { setLocal , getLocal  } from '@utils/local'
 
 export default class Spread extends Component {
   static defaultProps = {
     list: []
+  }
+
+
+ 
+  reloadPage(){
+    getLocal().then((id)=>{
+      if(!id){
+        setLocal();
+      }
+    })
   }
 
   handleClick = (item) => {
@@ -29,6 +40,11 @@ export default class Spread extends Component {
           <View className='home-spread__title'>
             <Text className='home-spread__title-txt'>今日推荐</Text>
           </View>
+          {(list.length <= 0) && <View 
+            className='home-spread__refresh'
+            onClick={this.reloadPage}>
+            地理位置获取失败,点我重新加载！
+          </View>}
           {list.map((item) => {
             const { id,
                     shop_name,
@@ -41,7 +57,10 @@ export default class Spread extends Component {
                     tags,
                     shop_state,
                     ele_qrcode,
-                    meituan_qrcode} = item
+                    meituan_qrcode,
+                    distance} = item
+            let dis_th = (distance*1).toFixed(0)/1000
+            let distance_text = dis_th >= 1 ? dis_th.toFixed(2)+'km' : (distance*1).toFixed(0) + 'm';
             let area_class = 'home-spread__list-item-left-area-'+area_id;
             let tag_list =!!tags?[ category ].concat(tags.split(',')) : [ category ];
             return (
@@ -68,6 +87,9 @@ export default class Spread extends Component {
                     {tag_list.map((t_item,index) => {
                       return (<Text key={index} className='home-spread__list-item-right-tag-item'>{t_item}</Text>)
                     })}
+                    <Text key={index} className='home-spread__list-item-right-tag-distance'>
+                      {distance_text}
+                    </Text>
                   </View>
                   <Text className='home-spread__list-item-right-rules'>
                     {rules}

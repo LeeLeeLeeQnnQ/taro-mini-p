@@ -1,10 +1,11 @@
 import {
-  APPLY_ORDER, SHOW_INFO
+  APPLY_ORDER, SHOW_INFO, SHOP_LIST_INFO
 } from '@constants/apply'
 
 const INITIAL_STATE = {
   createInfo: {},
-  showInfo: {}
+  showInfo: {},
+  shopList: {},
 }
 
 export default function apply(state = INITIAL_STATE, action) {
@@ -13,6 +14,12 @@ export default function apply(state = INITIAL_STATE, action) {
       return {
         ...state,
         createInfo: action.payload
+      }
+    }
+    case 'SHOP_LIST_INFO': {
+      return {
+        ...state,
+        shopList: action.payload
       }
     }
     case 'SHOW_INFO': {

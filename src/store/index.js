@@ -15,7 +15,7 @@ const middlewares = [
 
 // state log打印log
 if (process.env.NODE_ENV === 'development') {
-  middlewares.push(require('redux-logger').createLogger())
+  // middlewares.push(require('redux-logger').createLogger())
 }
 
 const enhancer = composeEnhancers(
@@ -25,7 +25,9 @@ const enhancer = composeEnhancers(
 
 // 唯一实例 返还
 export default function configStore () {
+  // 在这里获取store
   // 创建store 把根空间里的命名空间 与 方法 组合
   const store = createStore(rootReducer, enhancer)
+  store.local = {}
   return store
 }

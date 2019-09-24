@@ -1,5 +1,5 @@
-import { APPLY_ORDER , SHOW_INFO } from '@constants/apply'
-import { API_APPLY_ORDER , API_SHOW_INFO } from '@constants/api'
+import { APPLY_ORDER , SHOW_INFO , SHOP_LIST_INFO } from '@constants/apply'
+import { API_APPLY_ORDER , API_SHOW_INFO , API_SHOP_LIST } from '@constants/api'
 import { createAction } from '@utils/redux'
 
 /**
@@ -11,6 +11,13 @@ export const dispatchApplyOrder = payload => createAction({
   url: API_APPLY_ORDER,
   type: APPLY_ORDER,
   method:"POST",
+  payload
+})
+
+
+export const dispatchShopList = payload => createAction({
+  url: API_SHOP_LIST,
+  type: SHOP_LIST_INFO,
   payload
 })
 

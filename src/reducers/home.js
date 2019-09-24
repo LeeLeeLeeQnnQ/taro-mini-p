@@ -1,10 +1,10 @@
 import {
   HOME_BANNER, HOME_SPREAD
 } from '@constants/home'
-
+import Taro from '@tarojs/taro'
 const INITIAL_STATE = {
   bannerList: {},
-  spreadList: []
+  spreadList: [],
 }
 
 export default function home(state = INITIAL_STATE, action) {

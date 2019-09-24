@@ -15,7 +15,15 @@
     padding:0 15px;
   }
 }
-
+.home-spread__refresh{
+  margin-top: 50px;
+  text-align: center;
+  color: $gray;
+  font-size: 26px;
+  height: 35px;
+  line-height: 35px;
+  width:100%;
+}
 .home-spread__list {
   display: flex;
   flex-direction: row;
@@ -99,6 +107,7 @@
       &-title{
         text-align: left;
         color: #000;
+        font-size: 32px;
       }
       &-activities{
         text-align: left;
@@ -108,10 +117,17 @@
       }
       &-tag{
         display: flex;
+        justify-content: space-between;
+        width: 100%;
         &-item{
           margin-right: 8px;
           color: rgba(183,128,73,1);
           font-size: 24px;
+        }
+        &-distance{
+          margin-right: 8px;
+          color: gray;
+          font-size: 26px;
         }
       }
       &-rules{
@@ -133,9 +149,14 @@
       align-items: flex-start;
       justify-content: flex-start;
       top: 20px;
-      right: 25px;
+      right: 15px;
       &-title{
-        font-size: 26px;
+        width: 78px;
+        padding: 3px;
+        border:1px solid rgba(83,180,43,1);
+        margin: 2px;
+        text-align: center;
+        font-size: 22px;
         color: rgba(83,180,43,1);
       }
     }

@@ -9,7 +9,7 @@ import { connect } from '@tarojs/redux'
 // 获取借口方法
 import * as actions from '@actions/home'
 // 设备宽获样式方法
-import { getWindowHeight } from '@utils/style'
+import { getWindowHeight  } from '@utils/style'
 // 头部广告位组件
 import Banner from './banner'
 // 商户传播列表组件
@@ -22,6 +22,8 @@ import shareImg from './assets/share.png';
 
 // 分享
 import withShare from '../../share/withShare'
+
+import { setLocal , getLocal , updateLocalCity } from '@utils/local'
 
 
 const SPREAD_SIZE = 10
@@ -50,19 +52,20 @@ class Home extends Component {
     spreadList:[],
   }
   componentWillMount(){
-
+    
   }
 
-  // $setSharePath = () =>{
-  //   let pages = getCurrentPages();
-  //   let currPage = null;
-  //   if (pages.length) {
-  //      currPage = pages[pages.length - 1];
-  //   }
-  //   let page = !!currPage.route ? currPage.route : '';
-  //   const path = page +'?token='+ wx.getStorageSync('token');
-  //   return path
-  // }
+  componentDidShow(){
+    getLocal().then((id)=>{
+      if(!id){
+        updateLocalCity()
+      }else{
+        if(!!id && this.props.spreadList.length == 0){
+          this.loadSpread()
+        }
+      }
+    })
+  }
 
   // 已经挂载数据生命周期函数
   componentDidMount() {
@@ -73,7 +76,9 @@ class Home extends Component {
     // 获取传播列表函数
     this.loadSpread()
   }
-  
+
+
+
   handleBook = () => {
     Taro.switchTab({
       url: `/pages/apply/apply`

@@ -1,12 +1,9 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider  } from '@tarojs/redux'
-// import { View, ScrollView , Loading } from '@tarojs/components'
 import Index from './pages/index'
-
 import configStore from './store'
-
-// import * as actions from '@actions/user'
+import { setLocal } from '@utils/local'
 import './app.scss'
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -17,7 +14,6 @@ import './app.scss'
 const store = configStore()
 
 
-// @connect(state => state.user, { ...actions })
 class App extends Component {
 
   state = {
@@ -35,7 +31,13 @@ class App extends Component {
       'pages/webview/webview',
       'pages/receive-list/receive-list',
       'pages/invite-list/invite-list',
+      'pages/location/location'
     ],
+    permission: {
+      "scope.userLocation": {
+        "desc": "所在地" 
+      }
+    },
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -69,12 +71,13 @@ class App extends Component {
     }
   }
 
-
   // 顶级生命周期
   componentWillMount () {
+    setLocal();
   }
 
-  componentDidShow () {}
+  componentDidShow () {
+  }
 
   componentDidHide () {}
 
@@ -86,7 +89,7 @@ class App extends Component {
   // 请勿修改此函数
   render () {
     return (
-      <Provider store={store}>
+      <Provider  store={store}>
         <Index />
       </Provider>
     )

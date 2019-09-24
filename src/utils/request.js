@@ -78,11 +78,14 @@ async function sendRequest(options){
   if (method === 'POST') {
     header['content-type'] = 'application/json'
   }
-
+  const cityId = await getStorage('cityId')
+  const latitude = await getStorage('latitude')
+  const longitude = await getStorage('longitude')
+  let pData = Object.assign( payload,{city_id:cityId,latitude:latitude,longitude:longitude})
   return Taro.request({
     url,
     method,
-    data: payload,
+    data: pData,
     header
   }).then( async (res) => {
     const { code, data } = res.data

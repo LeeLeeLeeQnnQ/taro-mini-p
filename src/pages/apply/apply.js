@@ -6,6 +6,8 @@ import * as actions from '@actions/apply'
 import PickImg from './pick-img'
 import TitleDec from './title-dec'
 import './apply.scss'
+import { Loading } from '@components'
+import { setLocal , getLocal , updateLocalCity } from '@utils/local'
 
 
 
@@ -20,19 +22,20 @@ class Apply extends Component {
     super(props)
     this.state = {
     	// 控制
-      loaded: false,
-      loading: false,
       btnLoading1:false,
       btnLoading2:false,
+      // shopList
+      shopList:[],
+      pindex:0,
       // 信息
       order_sn:'',
       showInfo:{},
       comment_image:'',
       isShowInfo:false,
       isInfoEmpty:true,
+      refresh:0,
     }
   }
-
   // 获取存储的数据
   getStorage = (key) => {
     return Taro.getStorage({ key: key }).then(res => { return res.data}).catch(() => '')
@@ -40,14 +43,24 @@ class Apply extends Component {
   // 判断登录状态
   handlePreSreach = () => {
     let _this = this;
-    this.setState({ lkey: 0 }, ()=> {
-      this.getStorage('token').then(function (rs) {
-          if(!!rs){
-            _this.handleSreach(_this.state.order_sn);
-            return
-          }
-          _this.wxLogin()
-      });
+    getLocal().then((id)=>{
+      if(!id){
+        setLocal();
+      }else{
+        this.setState({ lkey: 0 }, ()=> {
+          this.getStorage('token').then(function (rs) {
+              if(!!rs){
+                _this.props.dispatchShopList().then((res) => {
+                  _this.setState({ shopList: res })
+                  _this.handleSreach(_this.state.order_sn);
+                })
+                return
+              }
+              _this.wxLogin()
+          });
+        })
+      }
+      return
     })
   }
   // 查询操作
@@ -75,8 +88,6 @@ class Apply extends Component {
       }else{
         this.setState({
           showInfo: data.order,
-        })
-        this.setState({
           isInfoEmpty: true,
         })
       }
@@ -150,7 +161,7 @@ class Apply extends Component {
       order_sn: e.detail.value,
     })
   }
-
+  // 有订单号提交
   onChangeCommentImage = (url) => {
     this.setState({
       comment_image: url ,
@@ -158,7 +169,7 @@ class Apply extends Component {
   }
 
   createOrder = () => {
-    if(!!this.state.btnLoading){
+    if(!!this.state.btnLoading2){
       return
     }
     if(!this.state.comment_image){
@@ -170,36 +181,146 @@ class Apply extends Component {
       return
     }
     const payload = {
-      store_id:this.state.showInfo.store_id,
+      shop_id:this.state.showInfo.shop_id,
       order_sn:this.state.showInfo.order_sn,
       comment_image:this.state.comment_image,
       isGetinfo:true,
     }
-    this.setState({
-      btnLoading: true,
-    })
     this.props.dispatchApplyOrder(payload).then((res) => {
       this.setState({
-        btnLoading: false,
-      })
-      if(res.data.code != 0){
-        Taro.showToast({
-          title: '请求失败,请稍后再试!',
-          icon: 'none',
-          duration: 6000
-        })
-        return
-      }
-      
-      this.setState({
-        btnLoading: false,
-        isShowInfo:false,
-        comment_image:'',
+          // 控制
+        btnLoading1:false,
+        btnLoading2:false,
+        // shopList
+        shopList:[],
+        pindex:0,
+        // 信息
         order_sn:'',
+        showInfo:{},
+        shop_image:'',
+        order_image:'',
+        comment_image:'',
+        isShowInfo:false,
+        isInfoEmpty:true,
+        showInfo:{},
       })
       Taro.showModal({
         title: '报名成功！',
-        content: '请关注‘北京福利社公众号’以免红包发送失败',
+        content: '请关注‘'+res.wechat+'’以免红包发送失败',
+        showCancel:false,
+      })
+      .then(res => 
+        Taro.switchTab({
+          url: `/pages/home/home`
+        })
+    )}).catch(() => {
+      this.setState({
+        btnLoading2: false,
+      })
+    })
+  }
+
+  getShopList = () =>{
+  }
+
+  //无订单号提交
+  onChange = e => {
+    this.setState({
+      pindex: e.detail.value,
+    })
+  }
+
+  onChangeShopImage = (url) => {
+    this.setState({
+      shop_image: url ,
+    })
+  }
+
+  onChangeOrderImage = (url) => {
+    this.setState({
+      order_image: url ,
+    })
+  }
+
+  onChangeCommentImage2 = (url) => {
+    this.setState({
+      comment_image: url ,
+    })
+  }
+
+  createOrder2 = () => {
+    if(!!this.state.btnLoading2){
+      return
+    }
+    if(!this.state.shopList[this.state.pindex].id){
+      Taro.showToast({
+        title: '请选择有效店铺',
+        icon: 'none',
+        duration: 3000
+      })
+      return
+    }
+    if(!this.state.order_sn){
+      Taro.showToast({
+        title: '请输入有效订单号',
+        icon: 'none',
+        duration: 3000
+      })
+      return
+    }
+    if(!this.state.comment_image){
+      Taro.showToast({
+        title: '请上传评价截图',
+        icon: 'none',
+        duration: 3000
+      })
+      return
+    }
+    if(!this.state.shop_image){
+      Taro.showToast({
+        title: '请上传订单截图',
+        icon: 'none',
+        duration: 3000
+      })
+      return
+    }
+    if(!this.state.order_image){
+      Taro.showToast({
+        title: '请上传订单截图',
+        icon: 'none',
+        duration: 3000
+      })
+      return
+    }
+    const payload = {
+      shop_id:this.state.shopList[this.state.pindex].id,
+      order_sn:this.state.order_sn,
+      comment_image:this.state.comment_image,
+      shop_image:this.state.shop_image,
+      order_image:this.state.order_image,
+      isGetinfo:true,
+    }
+    this.props.dispatchApplyOrder(payload).then((res) => {
+      this.setState({
+          // 控制
+        btnLoading1:false,
+        btnLoading2:false,
+        // shopList
+        shopList:[],
+        pindex:0,
+        // 信息
+        order_sn:'',
+        showInfo:{},
+        shop_image:'',
+        order_image:'',
+        comment_image:'',
+        isShowInfo:false,
+        isInfoEmpty:true,
+        showInfo:{},
+      })
+      Taro.showModal({
+        title: '报名成功！',
+        content: '请关注‘'+res.wechat+'’以免红包发送失败',
         showCancel:false,
       })
       .then(res => 
@@ -213,32 +334,56 @@ class Apply extends Component {
     })
   }
   
+  componentDidShow(){
+    getLocal().then((id)=>{
+      if(!id){
+        updateLocalCity()
+      }
+    })
+  }
+
   componentDidMount() {
-    
   }
   // 提交的时候定时器延迟
 
   render () {
     const height = getWindowHeight(false)
+    const xuanzemendian = {
+      title : "选择店铺" ,
+      dec : "请点击选择下单店铺，选择错误将不予返现" ,
+      ctRed:true 
+    } 
     const dingdanhao = { 
       title : "订单号" , 
       dec : "从美团／饿了么APP复制" , 
       isHasImg:true , 
       exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e1.jpg" 
     }
+    const dingdanjietu1 = {
+      title : "上传商家截图" ,
+      dec : "包含：商家名称、支付金额" ,
+      isHasImg:true ,
+      exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e3.jpg" 
+    } 
     const pingjiejietu = {
       title : "上传评价截图" ,
       dec : "包含：商家名称、文字评语、好评图片" ,
       isHasImg:true ,
       exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e2.jpg" 
-    }
+    } 
+    const dingdanjietu2 = { 
+      title : "上传时间截图" , 
+      dec : "包含：订单号码、下单时间" , 
+      isHasImg:true , 
+      exampleImg : "http://ocs-attachment.oss-cn-qingdao.aliyuncs.com/e4.jpg" 
+    } 
     const guize = { 
       dec : "自助返现规则说明：" , 
       dec2 : "每人每天每店限1单", 
       dec3 : "每单限1份返利商品", 
       dec4 : "返现24小时内审核发放", 
-      dec5 : "如有疑问可咨询微信：hys18610653576"
-    }
+      dec5 : "如有疑问可咨询微信公众号平台"
+    } 
     return (
       <View className='apply'>
         <ScrollView
@@ -262,9 +407,49 @@ class Apply extends Component {
           {!!isShowInfo &&
           <View className='apply__infobox'>
             {(!isInfoEmpty) &&
-  	          <View className='apply__infobox-warning'>
-  	          	未查询到您的订单信息，请核实订单号是否有误；如无误请及时联系客服处理。
-  	          </View>
+    	        <View>
+                  <TitleDec
+                    data={ xuanzemendian } 
+                  />
+                  <View className='apply__wrap-sbox'>
+                    <View className='apply__wrap-sbox-section'>
+                      { (this.state.shopList.length > 0) && <Picker mode='selector' value={ this.state.pindex } range={ this.state.shopList } range-key={ 'shop_title' } onChange={this.onChange}>
+                        <view className='apply__wrap-sbox-section-picker'>
+                          {this.state.shopList[this.state.pindex].shop_title}
+                        </view>
+                      </Picker>}
+                    </View>
+                  </View>
+                  <TitleDec
+                    data={ dingdanjietu1 } 
+                  />
+                  <PickImg
+                    url = { this.state.shop_image }
+                    onImgChange = {this.onChangeShopImage}
+                  />
+
+                  <TitleDec
+                    data={ dingdanjietu2 } 
+                  />
+                  <PickImg
+                    url = { this.state.order_image }
+                    onImgChange = {this.onChangeOrderImage}
+                  />
+
+                  <TitleDec
+                    data={ pingjiejietu } 
+                  />
+                  <PickImg
+                    url = { this.state.comment_image }
+                    onImgChange = {this.onChangeCommentImage2}
+                  />
+                  <TitleDec
+                    data={ guize } 
+                  />
+                  <View className='apply__submitbtn'>
+                    <Button className='apply__submitbtn-btn' loading = { this.state.btnLoading2 } onClick={this.createOrder2}>我要报名</Button>
+                  </View>
+              </View>
             }
             {(!!isInfoEmpty) &&
             <View>
