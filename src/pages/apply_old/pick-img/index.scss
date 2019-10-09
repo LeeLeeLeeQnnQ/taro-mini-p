@@ -1,0 +1,21 @@
+@import "@styles/theme.scss";
+
+.pick-img {
+  padding: 30px;
+}
+
+.pick-img__box{
+	display: flex;
+	background-color: rgba(241,241,241,1);
+	border: 1px solid #999;
+	border-radius: 15px;
+	justify-content: center;
+	align-items: center;
+	min-height: 200px;
+	padding: 15px;
+	&-text{
+		color: $text-color-light;
+	}
+	&-img{
+	}
+}

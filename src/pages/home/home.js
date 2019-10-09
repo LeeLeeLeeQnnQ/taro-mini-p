@@ -80,8 +80,71 @@ class Home extends Component {
 
 
   handleBook = () => {
-    Taro.switchTab({
-      url: `/pages/apply/apply`
+    // Taro.switchTab({
+    //   url: `/pages/book/book`
+    // })
+    // jump({ title:'自助返现' , url: 'https://wechat.baitime.cn/wechat/Wx/cb' })
+     wx.request({
+      url: 'http://wechat.baitime.cn/index/index/rt',
+      method: 'POST',
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        let data = res.data.data;
+        // console.log(data)
+        let obj = {
+          timeStamp: data.timeStamp, // 支付签名时间戳，
+          nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+          package: data.package, //扩展字段，由商户传入
+          signType: data.signType, // 签名方式，
+          paySign: data.paySign,
+        }
+        console.log(obj)
+        wx.sendBizRedPacket({
+            timeStamp: data.timeStamp, // 支付签名时间戳，
+            nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+            package: data.package, //扩展字段，由商户传入
+            signType: data.signType, // 签名方式，
+            paySign: data.paySign, // 支付签名
+            success:(res)=>{
+              console.log('0')
+              console.log(res)
+            },
+            fail:(res)=>{
+              console.log('1')
+              console.log(res)
+            },
+            complete:(res)=>{
+              console.log('2')
+              console.log(res)
+            }
+        })
+        // if(res.data.code == 0) {
+          
+        // }else if (res.data.code == 20) {
+        //   Taro.showToast({
+        //     title: '请稍后再试！',
+        //     icon: 'none'
+        //   })
+        // }else if (res.data.code == 2148) {
+        //   Taro.showModal({
+        //     title: '请先登陆！',
+        //     content: '',
+        //     showCancel:false,
+        //   })
+        //   .then(res => 
+        //     Taro.switchTab({
+        //       url: `/pages/new-user/user`
+        //     })
+        //   )
+        // }else{
+        //   Taro.showToast({
+        //     title: res.msg,
+        //     icon: 'none'
+        //   })
+        // }
+      },
     })
   }
 

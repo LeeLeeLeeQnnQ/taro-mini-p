@@ -23,7 +23,8 @@ class App extends Component {
   config = {
     pages: [
       'pages/home/home',
-      'pages/apply/apply',
+      // 'pages/apply/apply',
+      'pages/book/book',
       'pages/new-user/user',
       'pages/store-item/store-item',
       'pages/info-list/info-list',
@@ -57,7 +58,7 @@ class App extends Component {
         text: "外卖福利"
       },
       {
-        pagePath: "pages/apply/apply",
+        pagePath: "pages/book/book",
         iconPath: "./assets/tab-bar/money.png",
         selectedIconPath: "./assets/tab-bar/money-active.png",
         text: "自助返现",

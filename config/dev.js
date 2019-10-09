@@ -1,12 +1,12 @@
 // NOTE H5 端使用 devServer 实现跨域，需要修改 package.json 的运行命令，加入环境变量
 const isH5 = process.env.CLIENT_ENV === 'h5'
 // H5请求网址
-// const HOST = '"https://wechat.baitime.cn"'
-const HOST = '"http://192.168.50.250"'
+const HOST = '"https://wechat.baitime.cn"'
+// const HOST = '"http://192.168.50.250"'
 
 // 小程序请求网址
-// const HOST_M = '"https://wechat.baitime.cn"'
-const HOST_M = '"http://192.168.50.250"'
+const HOST_M = '"https://wechat.baitime.cn"'
+// const HOST_M = '"http://192.168.50.250"'
 
 module.exports = {
   env: {
