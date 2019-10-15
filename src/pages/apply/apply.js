@@ -206,7 +206,7 @@ class Apply extends Component {
       })
       Taro.showModal({
         title: '报名成功！',
-        content: '请关注‘'+res.wechat+'’以免红包发送失败',
+        content: '请关注‘'+res.wechat,
         showCancel:false,
       })
       .then(res => 
@@ -320,7 +320,7 @@ class Apply extends Component {
       })
       Taro.showModal({
         title: '报名成功！',
-        content: '请关注‘'+res.wechat+'’以免红包发送失败',
+        content: '请关注‘'+res.wechat+'’，查看返现进度',
         showCancel:false,
       })
       .then(res => 
@@ -447,7 +447,7 @@ class Apply extends Component {
                     data={ guize } 
                   />
                   <View className='apply__submitbtn'>
-                    <Button className='apply__submitbtn-btn' loading = { this.state.btnLoading2 } onClick={this.createOrder2}>我要报名</Button>
+                    <Button className='apply__submitbtn-btn' loading = { this.state.btnLoading2 } onClick={this.createOrder2}>提交</Button>
                   </View>
               </View>
             }
