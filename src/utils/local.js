@@ -19,8 +19,7 @@ export function setLocal() {
   Taro.getLocation().then((res)=>{
     let dot  = res
 	  wx.request({
-      // url: 'https://wechat.baitime.cn/mini/index/getCity',
-      url: 'http://192.168.50.250/mini/index/getCity',
+      url: 'https://wechat.baitime.cn/mini/index/getCity',
       data: res,
       method: 'POST',
       header: {
@@ -53,8 +52,7 @@ export function updateLocalCity() {
   Taro.getLocation().then((res)=>{
     let dot  = res
     return wx.request({
-      // url: 'https://wechat.baitime.cn/mini/index/getCity',
-      url: 'http://192.168.50.250/mini/index/getCity',
+      url: 'https://wechat.baitime.cn/mini/index/getCity',
       data: res,
       method: 'POST',
       header: {
