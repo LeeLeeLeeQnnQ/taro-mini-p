@@ -43,25 +43,30 @@ class Apply extends Component {
   // 判断登录状态
   handlePreSreach = () => {
     let _this = this;
-    getLocal().then((id)=>{
-      if(!id){
-        setLocal();
-      }else{
-        this.setState({ lkey: 0 }, ()=> {
-          this.getStorage('token').then(function (rs) {
-              if(!!rs){
-                _this.props.dispatchShopList().then((res) => {
-                  _this.setState({ shopList: res })
-                  _this.handleSreach(_this.state.order_sn);
-                })
-                return
-              }
-              _this.wxLogin()
-          });
-        })
-      }
-      return
-    })
+    this.getStorage('token').then(function (rs) {
+        setTimeout(()=>{
+          if(!!rs){
+            _this.props.dispatchShopList().then((res) => {
+              _this.setState({ shopList: res })
+              _this.handleSreach(_this.state.order_sn);
+            })
+            return
+          }else{
+            _this.wxLogin()
+            return
+          }
+        },0)
+    });
+    // getLocal().then((id)=>{
+    //   if(!id){
+    //     setLocal();
+    //   }else{
+    //     this.setState({ lkey: 0 }, ()=> {
+          
+    //     })
+    //   }
+    //   return
+    // })
   }
   // 查询操作
   handleSreach = (order_sn) => {
@@ -105,7 +110,7 @@ class Apply extends Component {
       var code = res.code;
       if (code){
           wx.request({
-            url: 'https://wechat.baitime.cn/wechat/User/info',
+            url: 'https://wechat.baitime.cn/mini/User/info',
             data: { code: code },
             method: 'POST',
             header: {
@@ -114,7 +119,9 @@ class Apply extends Component {
             success: function (res) {
               if(res.data.code == 0) {
                 Taro.setStorage({ key: 'token', data: res.data.data['token'] || '' })
-                _this.handleSreach(_this.state.order_sn);
+                setTimeout(function(){
+                  _this.handlePreSreach();
+                },200)
               }else if (res.data.code == 20) {
                 Taro.showToast({
                   title: '请稍后再试！',
@@ -140,17 +147,11 @@ class Apply extends Component {
             },
           })
         } else {
-          if(this.state.lkey == 5){
-            Taro.showToast({
-              title: '网络错误！',
-              icon: 'none'
-            })
-            return
-          }
-          let lkey = this.state.lkey*1 + 1;
-          this.setState( { lkey: lkey }, ()=> {
-            this.wxLogin()
+          Taro.showToast({
+            title: '没有网络了！',
+            icon: 'none'
           })
+          return
         }
       }
     })

@@ -33,7 +33,7 @@ export default class Profile extends Component {
         if (code) {
             e.detail.code = code;
             wx.request({
-              url: 'https://wechat.baitime.cn/wechat/User/info',
+              url: 'https://wechat.baitime.cn/mini/User/info',
               data: e.detail,
               method: 'POST',
               header: {

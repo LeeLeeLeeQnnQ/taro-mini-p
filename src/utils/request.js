@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import { API_USER, API_USER_LOGIN } from '@constants/api'
-
+// import regeneratorRuntime from '@utils/runtime.js'
 const CODE_SUCCESS = 0
 const CODE_AUTH_EXPIRED = 1024
 let flkey = 0
@@ -19,7 +19,7 @@ async function wxlogin(cb,options) {
     var code = res.code;
     if (code) {
         wx.request({
-          url: 'https://wechat.baitime.cn/wechat/User/info',
+          url: 'https://wechat.baitime.cn/mini/User/info',
           data: { code: code },
           method: 'POST',
           header: {

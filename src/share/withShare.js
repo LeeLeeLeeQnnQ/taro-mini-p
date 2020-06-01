@@ -1,5 +1,7 @@
 import Taro from '@tarojs/taro';
 
+// import regeneratorRuntime from '@utils/runtime.js'
+
 function withShare(opts = {}) {
   
   // 设置默认

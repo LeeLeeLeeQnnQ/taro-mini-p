@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Tag } from '@components'
 import './index.scss'
-import { setLocal , getLocal  } from '@utils/local'
+import { setLocal , getLocal , updateLocalCity  } from '@utils/local'
 
 export default class Spread extends Component {
   static defaultProps = {
@@ -14,7 +14,7 @@ export default class Spread extends Component {
   reloadPage(){
     getLocal().then((id)=>{
       if(!id){
-        setLocal();
+        setLocal()
       }
     })
   }

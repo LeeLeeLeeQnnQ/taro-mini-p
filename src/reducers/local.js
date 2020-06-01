@@ -9,7 +9,8 @@ export default function local(state = INITIAL_STATE, action) {
     case CITY_INFO: {
       let list = action.payload.list || []
         return {
-          ...state
+          ...state,
+          city_info:action.payload
         }
     }
     default:
